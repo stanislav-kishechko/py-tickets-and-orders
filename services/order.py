@@ -1,9 +1,11 @@
-from django.db import transaction
 from datetime import datetime
-
+from django.db import transaction
+from django.contrib.auth import get_user_model
 from django.db.models import QuerySet
 
-from db.models import Order, Ticket, User
+from db.models import Order, Ticket
+
+User = get_user_model()
 
 
 @transaction.atomic
@@ -16,9 +18,7 @@ def create_order(
 
     if date:
         created_at = datetime.strptime(date, "%Y-%m-%d %H:%M")
-        order = Order.objects.create(user=user)
-        Order.objects.filter(id=order.id).update(created_at=created_at)
-        order.refresh_from_db()
+        order = Order.objects.create(user=user, created_at=created_at)
     else:
         order = Order.objects.create(user=user)
 
@@ -33,7 +33,7 @@ def create_order(
     return order
 
 
-def get_orders(username: str = None) -> QuerySet:
+def get_orders(username: str = None) -> QuerySet[Order]:
     if username:
         return Order.objects.filter(user__username=username)
 

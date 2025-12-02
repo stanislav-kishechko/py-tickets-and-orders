@@ -8,7 +8,7 @@ def get_movies(
         title: str = None,
         genres_ids: list = None,
         actors_ids: list = None
-) -> QuerySet:
+) -> QuerySet[Movie]:
     movies = Movie.objects.all()
 
     if title is not None:

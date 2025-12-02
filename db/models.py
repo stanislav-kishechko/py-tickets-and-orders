@@ -59,7 +59,7 @@ class User(AbstractUser):
 
 
 class Order(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=False, null=True)
     user = models.ForeignKey(
         to=User, on_delete=models.CASCADE, related_name="orders"
     )
